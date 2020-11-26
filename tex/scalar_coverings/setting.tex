@@ -1,0 +1,70 @@
+In this section, we first define suboptimal covering numbers
+with respect to an abstract \multienv\ control problem
+independent of distinctions
+such as continuous vs.\ discrete time and stochastic vs.\ deterministic.
+We then instantiate these notions for a particular class of LQR problems.
+
+\paragraph{Notation}
+The set of all functions $\cX \mapsto \cY$ is denoted by $\cY^\cX$.
+The relation $A \succeq B$ (resp. ${A \succ B}$) denotes that $A - B$ is positive semidefinite (resp.\ definite).
+Matrices of zeros and ones, with dimension implied by context, are denoted by $\zero$ and $\one$.
+The integers $\{1, \dots, N\}$ are denoted by $[N]$.
+
+
+
+
+\begin{definition}%
+	A \emph{\multienv\ optimal control problem} is defined by
+	an arbitrary state space $\cX$,
+	action space $\cU$,
+	and \envword\ space $\Envs$;
+	a class of reference policies $\Refpolicies \subseteq \cU^\cX$,
+	and an objective function $J : \Envs \times \cU^\cX \mapsto \R$.
+	The partial application of $J$ for $\env \in \Envs$
+	is denoted by $J_\env : \cU^\cX \mapsto \R$.
+	The optimal reference cost for an \envword\ is denoted by
+	$J^\star_\env = \min_{\pi \in \Refpolicies} J_\env(\pi)$.
+\end{definition}
+
+
+
+\begin{definition}%
+\label{def:suboptimal-neighborhood}
+	For $\pi : \cX \mapsto \cU$ and $\alpha > 1$,
+	we define the \emph{$\subopt$-suboptimal neighborhood} of $\pi$ as
+	\(
+		\suboptneighb{\subopt}{\pi} = \left\{
+			\env \in \Envs :
+			\nofrac{J_\env(\pi)}{J^\star_\env}
+			\leq \subopt
+		\right\}.
+	\)
+\end{definition}
+
+\begin{definition}%
+\label{def:suboptimal-covering}
+	For $\coveringset \subseteq \cU^\cX$,
+	we say $\coveringset$ is an \emph{$\subopt$-suboptimal cover} of $\ \Envs$
+	if
+	\(
+		\ \bigcup_{\pi \in \coveringset} \suboptneighb{\subopt}{\pi}
+		= \Envs.
+	\)
+\end{definition}
+
+\begin{definition}%
+\label{def:suboptimal-covering-number}
+	We define the \emph{$\subopt$-suboptimal covering number} of $\Envs$,
+	denoted $\coveringnum{\subopt}{\Envs}$,
+	as the cardinality of the smallest finite $\alpha$-suboptimal cover of $\Envs$ if one exists,
+	or $\infty$ otherwise.
+\end{definition}
+
+We define the suboptimal neighborhood using a cost ratio
+instead of a cost difference
+to ensure that it remains meaningful
+when
+$J^\star_\env$ varies widely over $\Envs$.
+Suboptimal coverings generalize the construct of stability coverings
+\citep{stilwell-interpolation}.
+

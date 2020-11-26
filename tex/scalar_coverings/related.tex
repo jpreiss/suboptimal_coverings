@@ -1,0 +1,82 @@
+
+Suboptimal neighborhoods are closely related to methods for parametric uncertainty
+in robust control theory
+\citep{dullerud-robust}.
+Robust methods seek a policy
+that performs well on all of $\Envs$
+without observing the particular ${\env \in \Envs}$.
+There may be no solution if $\Envs$ is too diverse.
+Adaptive policies
+of the self-tuning type
+synthesize a \singleenv\ policy after observing $\env$,
+but this relies on the assumption that control synthesis can be computed quickly
+\citep{astrom-adaptive}.
+Adaptive multi-model methods use a precomputed set of policies instead
+\citep{murray-smith-multimodel}.
+More attention has been paid to
+the rule for switching or blending policies
+than to constructing the policy set.
+\citet{fu-adaptive-switching,stilwell-interpolation,yoon-gain-scheduling-minimax}
+assert the existence of a finite cover
+by continuity and compactness arguments.
+To address the need for small covers,
+\citet{anderson-coverings,mcnichols-selecting-discrete,tan-selecting,fekri-issues,du-multimodel-integrated}
+propose constructive algorithms, %
+sometimes with arguments for minimality,
+but without size bounds.
+\citet{jalali-multimodel-vinnicombe}
+show an upper bound in terms of frequency-domain properties of $\Envs$,
+as opposed to state-space parameters like mass and geometry.
+The most closely related work to ours is from \citet{fu-minimum-switching},
+who shows a tight bound of $2^n$
+for the stability covering number
+of a relatively broad $\Envs$. %
+This result is complementary to ours:
+suboptimality is a stronger criterion than stability,
+but our class of $\Envs$ is more restrictive.
+
+\Multienv\ control is a popular topic in deep learning research,
+where it is often motivated by ideas of lifelong skill acquisition.
+Domain randomization methods
+follow the spirit of robust control
+\citep{peng-dynamics-randomization-corr17}.
+Most adaptive methods use architectural constructs that can only be applied to finite \envword\ sets
+\citep{yang-multitask,parisotto-actormimic,devin-modular}.
+A common approach for infinite \envword\ spaces is to treat $\env$ as a vector input alongside the system state.
+\citet{yu-up-osi-rss17,chen-hardware-conditioned}
+use this approach for dynamics parameters.
+\citet{schaul-uvfa} use it for navigation goals.
+There is evidence that policy class influences these methods:
+in a recent benchmark %
+\citep{yu-metaworld},
+the concatenated-input architecture
+trails the multi-head architecture.
+\citet{florensa-stochasticnn}
+propose taking the outer product of $x$ and $\phi$ instead.
+Other investigations into the difficulty of \multienv\ control include
+methods to condition the \multienv\ optimization landscape
+\citep{yu-pcgrad}
+or balance disparate cost ranges
+\citep{hasselt-popart}.
+
+\begin{figure}[t]
+	\hfill
+	\foreach \alpha in {1.0367,1.0526,1.0852,1.1137,1.2000}
+	{
+		\includegraphics[width=0.17\textwidth,trim={60px 130px 80px 160px},clip]{neighborhoods_3x3/alpha_\alpha.png}
+		\hfill
+	}
+	\caption{%
+		$\alpha$-Suboptimal neighborhoods for the three-dimensional decomposed dynamics system with
+		minimal coupling
+		($A = U = V^\top = I_{3 \times 3}$)
+		and breadth $\breadth = 100$.
+		Neighborhoods shown for
+		$\alpha$ ranging from $1.04$ to $1.2$
+		with a fixed
+		controller.
+	}
+	\label{fig:neighborhoods-3x3}
+\end{figure}
+
+

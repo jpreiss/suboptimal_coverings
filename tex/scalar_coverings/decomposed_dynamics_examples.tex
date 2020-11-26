@@ -1,0 +1,98 @@
+
+\label{sec:quadrotor}
+As an example of a realistic \DDFproblem,
+we consider the quadrotor helicopter illustrated in \Cref{fig:quadrotor}.
+Near the hover state, its full nonlinear dynamics are well approximated by a linearization.
+The state is given by
+$
+	x = (\pos, \vel, \attitude, \anglevel),
+$
+where $\pos \in \R^3$ is position,
+$\vel \in \R^3$ is linear velocity,
+$\attitude \in \R^3$ is attitude Euler angles,
+and $\anglevel \in \R^3$ is angular velocity.
+The inputs
+$u \in \R^4_{\geq 0}$
+are the squared angular velocities of the propellers.
+
+Many factors influence the response to inputs,
+including geometry, mass, moments of inertia, motor properties, and propeller aerodynamics.
+These can be combined and partially nondimensionalized
+into four control authority parameters to form $\env \in \Envs$.
+The hover state occurs at $x = \zero,\ u \propto \one$,
+where the constant input counteracts gravity.
+The linearized dynamics are given by
+\newcommand{\Gmatrix}{\begin{bsmallmatrix*}[r] 0 & g & 0 \\ \hspace{-1mm}-g & 0 & 0 \\ 0 & 0 & 0 \\ \end{bsmallmatrix*}}
+\begin{equation*}
+\label{eq:quad-linearized}
+	\dot x
+	=
+	\underbrace{
+		\begin{bsmallmatrix}
+			\zero &     I & \zero    & \zero \\
+			\zero & \zero & G & \zero \\
+			\zero & \zero & \zero    &     I \\
+			\zero & \zero & \zero    & \zero \\
+		\end{bsmallmatrix}
+	}_A
+	x
+	+
+	\underbrace{
+		\begin{bsmallmatrix}
+			\zero    & \zero \\
+			\hat e_z & \zero \\
+			\zero    & \zero \\
+			\zero    &     I \\
+		\end{bsmallmatrix}
+	}_U
+	\underbrace{
+		\begin{bsmallmatrix}
+			\sigma_z & & & \\
+			& \sigma_\roll & & \\
+			& & \sigma_\pitch & \\
+			& & & \sigma_\yaw \\
+		\end{bsmallmatrix}
+	}_\Sigma
+	\underbrace{
+		\begin{bsmallmatrix*}[r]
+			 1 &  1 &  1 &  1 \\
+			 1 & -1 & -1 &  1 \\
+			-1 & -1 &  1 &  1 \\
+			 1 & -1 &  1 & -1 \\
+		\end{bsmallmatrix*}
+	}_{V^\top}
+	u,
+	\quad
+	G = \Gmatrix,
+\end{equation*}
+where $g$ is the gravitational constant
+and $\hat e_z = [0\ 0\ 1]^\top$.
+The parameters
+$(\sigma_z,\ \sigma_\roll,\ \sigma_\pitch,\ \sigma_\yaw)$
+denote
+the thrust, roll, pitch, and yaw authority constants respectively.
+Since we use the convention $\sigma \in [\recip \theta, 1]$,
+the maximum value of each constant can be varied
+by scaling the columns of $U$.
+
+
+
+
+\begin{figure}[tpb]
+	\begin{minipage}{0.28\textwidth}
+		\input{tikz/quadrotor.tex}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.68\textwidth}
+		\caption{%
+			Quadrotor helicopter with position states $x, y, z$,
+			attitude states $\roll, \pitch, \yaw$,
+			and propeller speed inputs $u_1, u_2, u_3, u_4$.
+			The linearized dynamics at hover,
+			subject to variations in mass, geometry, etc.,
+			can be expressed in decomposed dynamics form---%
+			see \Cref{sec:quadrotor}.
+		}%
+		\label{fig:quadrotor}
+	\end{minipage}
+\end{figure}

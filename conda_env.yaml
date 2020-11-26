@@ -1,0 +1,23 @@
+name: lqr
+dependencies:
+  - python=3.8
+  - black
+  - conda-forge::ffmpeg-python
+  - conda-forge::vispy
+  - cvxpy
+  - ffmpeg>=4.2
+  - matplotlib
+  - numpy
+  - pandas
+  - pillow
+  - pyarrow
+  - pyopengl
+  - pytest
+  - quadprog
+  - seaborn
+  - scikit-image
+  - snakeviz
+  - sympy
+  - pip
+  - pip:
+    - arxiv-latex-cleaner

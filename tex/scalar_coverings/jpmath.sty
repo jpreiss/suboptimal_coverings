@@ -1,0 +1,140 @@
+\usepackage{amsmath, amssymb}
+\usepackage{breqn}
+\usepackage{mathtools}
+\usepackage{nicefrac}
+\usepackage{siunitx}
+\usepackage{xstring}
+
+% Make the penalty for breaking inline math across lines much higher.
+% Override in particular equations by inserting \allowbreak.
+\binoppenalty=9999
+\relpenalty=9999
+
+% Black magic from StackExchange.
+% Defines mathcal macros such that \cA = \mathcal{A}, and so on.
+\def\mydefc#1{\expandafter\def\csname c#1\endcsname{\mathcal{#1}}}
+\def\mydefallc#1{\ifx#1\mydefallc\else\mydefc#1\expandafter\mydefallc\fi}
+\mydefallc ABCDEFGHIJKLMNOPQRSTUVWXYZ\mydefallc
+
+% Sets of numbers.
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}  % Generic field.
+\newcommand{\Rpos}{\R_{> 0}}
+\newcommand{\Rnonneg}{\R_{\geq 0}}
+
+% Common sets.
+\newcommand{\ball}{\cB}
+\newcommand{\PSD}[1]{\mathbb{S}_+^{#1}}
+\newcommand{\PD}[1]{\mathbb{S}_{++}^{#1}}
+\newcommand{\Rnn}{\R^{n \times n}}
+\newcommand{\Rnm}{\R^{n \times m}}
+\newcommand{\Rmn}{\R^{m \times n}}
+
+% Bold and blackboard symbols.
+\newcommand{\one}{\mathbf{1}}
+\newcommand{\zero}{\mathbf{0}}
+\newcommand{\I}{\mathbb{I}}  % For an indicator random variable.
+% Common fractions.
+\newcommand{\recip}[1]{\frac{1}{#1}}
+\newcommand{\half}{\recip{2}}
+\newcommand{\invsqrt}[1]{\recip{\sqrt{#1}}}
+
+% Common summations.
+\newcommand{\sumin}{\sum_{i=1}^n}
+\newcommand{\sumtn}{\sum_{t=1}^n}
+
+% Logic.
+\DeclareMathOperator{\suchthat}{such\ that}
+\DeclareMathOperator{\st}{s.t.}
+\DeclareMathOperator{\subjto}{subject\ to}
+\DeclareMathOperator{\otherwise}{otherwise}
+\DeclareMathOperator{\foralltext}{\text{ for all } }
+
+% Delimiters.
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inner}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+% Linear algebra and matrices.
+\newcommand{\T}{\top}
+\DeclareMathOperator{\rank}{\mathbf{rank}}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\diag}{diag}
+% TODO how to renewcommand for MathOperator
+\renewcommand{\Vec}{\mathrm{Vec}}
+\newcommand{\bmat}[1]{\begin{bmatrix} #1 \end{bmatrix}}
+\newcommand{\bsmallmat}[1]{\begin{bsmallmatrix} #1 \end{bsmallmatrix}}
+\newcommand{\pmat}[1]{\begin{pmatrix} #1 \end{pmatrix}}
+\newcommand{\trace}[1]{\mathrm{Tr} \hspace{-1pt} \left[ #1 \right]}
+
+% Complex numbers.
+\DeclareMathOperator{\re}{Re}
+\DeclareMathOperator{\im}{Im}
+
+% Calculus / analysis.
+\newcommand{\partialby}[1]{\frac{\partial}{\partial #1}}
+\newcommand{\Lip}[1]{\mathrm{Lip}(#1)}
+\renewcommand{\d}{\mathrm{d}}
+\newcommand{\upto}{\nearrow}
+\newcommand{\downto}{\searrow}
+
+% Optimization.
+\DeclareMathOperator*{\argmax}{argmax\ }
+\DeclareMathOperator*{\argmin}{argmin\ }
+\DeclareMathOperator*{\minimize}{minimize\ }
+\DeclareMathOperator*{\maximize}{maximize\ }
+\DeclareMathOperator{\OPT}{OPT}
+\DeclareMathOperator{\const}{const.}
+\DeclareMathOperator{\epi}{\mathbf{epi}}
+\newcommand{\subgradients}[2]{\delta #1 (#2)}
+\DeclareMathOperator{\prox}{\mathbf{prox}}
+
+% Geometry.
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\ext}{ext}
+\DeclareMathOperator{\vol}{vol}
+
+% Probability distributions.
+\DeclareMathOperator{\Normal}{\mathcal{N}}
+\DeclareMathOperator{\Binomial}{Binomial}
+\DeclareMathOperator{\Uniform}{Uniform}
+
+% Other probability stuff.
+\DeclareMathOperator*{\E}{\mathbb{E}}
+\newcommand{\iid}{\mathrm{iid}}
+\DeclareMathOperator{\Var}{Var}
+\newcommand{\Simplex}[1]{\Delta(#1)} % TODO: how to make it use \left( \right) without a preceding space?
+\newcommand{\Indicator}[1]{\I_{#1}}
+\newcommand{\cond}{\;\middle\vert\;}
+
+% Learning stuff.
+\DeclareMathOperator{\Rad}{R}
+\DeclareMathOperator{\VCdim}{VCdim}
+\DeclareMathOperator{\Ldim}{Ldim}
+\DeclareMathOperator{\Reg}{Reg}
+\DeclareMathOperator{\pReg}{\overline{Reg}}
+\DeclareMathOperator{\fat}{fat}
+\DeclareMathOperator{\sfat}{sfat}
+\DeclareMathOperator{\UCB}{UCB}
+
+% Control stuff.
+\newcommand{\Laplace}{\cL}
+
+% CS, complexity, etc.
+\DeclareMathOperator{\poly}{poly}
+
+% Miscellaneous.
+\newcommand{\autoparen}[1]{\IfSubStr{#1}{+}{(#1)}{\IfSubStr{#1}{-}{(#1)}{#1}}} % TODO: figure out how to do logical or, lmao
+\renewcommand{\th}{^{\mathrm{th}}}
+\DeclareMathOperator{\clip}{clip}
+\DeclareMathOperator{\sign}{sign}
+\newcommand{\eps}{\varepsilon}
+%\newcommand{\nofrac*}[2]{\left. \autoparen{#1} \middle/ \autoparen{#2} \right.} % to easily switch between frac, nicefrac, and plain old num / denom
+\newcommand{\nofrac}[2]{\left. #1 \middle/ #2 \right.} % to easily switch between frac, nicefrac, and plain old num / denom
+\newcommand{\defeq}{\triangleq}  % in case we decide to use := or something
