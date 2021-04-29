@@ -1,0 +1,57 @@
+In this section we define $\alpha$-suboptimal covering numbers
+with respect to an abstract \multienv\ control problem,
+independent of distinctions
+such as continuous vs.\ discrete time and stochastic vs.\ deterministic dynamics.
+We then instantiate these definitions for a particular class of LQR problems.
+
+\paragraph{Notation}
+The set of all functions $\cX \mapsto \cY$ is denoted by $\cY^\cX$.
+The relation $A \succeq B$ (resp. ${A \succ B}$) denotes that $A - B$ is positive semidefinite (resp.\ definite).
+Matrices of zeros and ones, with dimension implied by context, are denoted by $\zero$ and $\one$.
+The integers $\{1, \dots, N\}$ are denoted by $[N]$.
+
+
+
+
+\begin{definition}%
+	A \emph{\multienv\ optimal control problem} is defined by
+	an arbitrary state space $\cX$,
+	action space $\cU$,
+	and \envword\ space $\Envs$;
+	a class of reference policies $\Refpolicies \subseteq \cU^\cX$,
+	and a strictly positive objective function $J : \Envs \times \cU^\cX \mapsto \R_{> 0}$.
+	The partial application of $J$ for $\env \in \Envs$
+	is denoted by $J_\env : \cU^\cX \mapsto \R$.
+	The optimal reference cost for an \envword\ is denoted by
+	$J^\star_\env = \inf_{\pi \in \Refpolicies} J_\env(\pi)$.
+\end{definition}
+
+
+
+\begin{definition}%
+\label{def:suboptimal-neighborhood}
+	Consider a \multienv\ optimal control problem $(\cX, \cU, \Envs, \Refpolicies)$
+	and a suboptimality ratio $\alpha > 1$.
+	Given a policy $\pi : \cX \mapsto \cU$,
+	we define its \emph{$\subopt$-suboptimal neighborhood} as
+	\(
+		\suboptneighb{\subopt}{\pi} = \left\{
+			\env \in \Envs :
+			\nofrac{J_\env(\pi)}{J^\star_\env}
+			\leq \subopt
+		\right\}
+	\).
+	A set of policies $\coveringset \subseteq \cU^\cX$
+	is an \emph{$\subopt$-suboptimal cover} of $\ \Envs$
+	if
+	\(
+		\ \bigcup_{\pi \in \coveringset} \suboptneighb{\subopt}{\pi}
+		= \Envs
+	\).
+	The \emph{$\subopt$-suboptimal covering number} of $\Envs$,
+	denoted $\coveringnum{\subopt}{\Envs}$,
+	is the size of the smallest finite $\alpha$-suboptimal cover of $\Envs$ if one exists,
+	or $\infty$ otherwise.
+\end{definition}
+
+

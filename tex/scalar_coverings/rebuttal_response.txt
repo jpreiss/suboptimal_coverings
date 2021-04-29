@@ -1,0 +1,56 @@
+We thank the reviewers for their detailed and thoughtful comments.
+
+Response on scope / assumptions
+----
+
+We agree that the focus on the scalar case and the B matrix are significant restrictions compared to the general LQR problem. Removing them is our primary focus for short-term future work.
+
+Regarding R3's comment about the impact on reinforcement learning, this is our primary focus for long-term future work.
+
+Regarding R1's statement:
+
+> Their definition of a "task" is quite restrictive and not valid in practice... As the authors mention in the intro, they could involve "mapping an environment" or "delivering a package" - situations that wouldn't fit into this LQR-based framework.
+
+This example combines two expressiveness gaps: the gap between discrete and continuous task spaces, and the gap between general continuous task spaces and our LQR setup. We propose that many continuous task spaces, e.g. those arising from variations in physical parameters, will tend to be less diverse than discrete task spaces. Within the continuous task spaces, we argue that many important control tasks include stabilizing the system at an equilibrium as a subtask. This will (assuming smoothness) be well-approximated by an LQR problem within a neighborhood of the equilibrium point. Therefore, analysis of LQR suboptimal covering numbers may provide a useful reference for suboptimal covering numbers of more complex tasks. We will add this motivation to the paper.
+
+
+Individual comment responses
+----
+
+R1:
+> There are of course connections to other topics like switched systems and robust control... There was no real comparison to existing approaches.
+We are not aware of other work focused on bounding covering numbers, other than those mentioned in Section 5. We would greatly appreciate any suggestions. We agree that our discussion mostly considers robust and switched control as a source of results rather than a source of motivation/applications. We will correct this.
+
+R1:
+> Having the related work section at the back of the paper was a bit odd.
+> The location of the quadrotor example... was a bit peculiar.
+We will restructure the paper according to the committee's preference.
+
+R1:
+> some of the notation was rather similar to each other - especially with the use of caligraphic letters.
+We will make the notation easier to distinguish.
+
+R2:
+> The results are given for continuous time LQR. A comment on whether the techniques would generalize to discrete time would be helpful.
+TODO
+
+R2:
+> Theorem 11 and Theorem 14 both impose a lower bound on $\alpha$. A comment on the consequences of this assumption would be helpful.
+We believe that this assumption is mild for applications where a suboptimal cover is used as a multi-task control policy: if the application demands a suboptimality ratio very close to 1, then the size of the suboptimal cover is likely to become impractical for storage. However, it could be an obstacle to deriving further theoretical results building upon suboptimal covers, such as a reinforcement learning algorithm. We will add a discussion.
+
+R3:
+> Please do not give a URL in the abstract.
+We will move the URL elsewhere according to the committee's preference.
+
+R3:
+> I find the mixture of matrix-based intermediate results with scalar results not very convincing. I think the results could be presented in a more compact manner if they were presented purely for the scalar case...
+Assuming that the reviewer is referring to Lemmas 6-8, we use each lemma in matrix form in the empirical section:
+- Lemma 6 (GCC synthesis) to define the geometric grid covering.
+- Lemma 7 to guarantee existence of the geometric grid covering, but we state "by continuity" instead of explicitly referring to Lemma 7. We will fix this.
+- Lemma 8 to compute "Efficiency of GCC synthesis" empirical result (Figure 2c).
+Therefore, we feel that leaving them in matrix form makes the paper more reproducible and self-contained. However, we will reduce them to scalar versions if the committee prefers.
+
+R3:
+> Proof of Theorem 14: the statement "For such a cover N(k_i) and N(k_{I+1}) must intersect by lemma 13.." is not clear. It seems that you implicitly assume that k_i and k_{I+1} are ordered...
+We assume that C is "in decreasing order" in the first sentence. We will restructure the proof to move this assumption closer to the place where it is used.
+

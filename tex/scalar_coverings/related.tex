@@ -1,0 +1,70 @@
+\label{sec:related}
+
+Suboptimal coverings are closely related to several topics in control theory.
+Robust control synthesis under parametric uncertainty
+\citep{dullerud-robust}
+can be interpreted as seeking a policy that performs well on all of $\Envs$
+without observing the particular ${\env \in \Envs}$.
+Most problem statements in robust synthesis admit problem instances with no solution; the goal is to find a robust policy \emph{if} one exists.
+Gain-scheduled control considers a \multienv\ setup identical to ours,
+while adaptive control control
+adds the complication that $\env$ is not known to the policy.
+
+Adaptive and gain-scheduled policies
+of the \emph{self-tuning} type
+synthesize a \singleenv\ policy after estimating $\env$,
+but this relies on the assumption that control synthesis can be computed quickly
+\citep{astrom-adaptive}.
+In contrast, methods of the \emph{multi-model} type use a precomputed set of policies
+\citep{murray-smith-multimodel}.
+Although all multi-model methods impose some kind of coverage condition on the policy set,
+researchers have focused more on the switching rule than the policy set.
+For example,
+\citet{fu-adaptive-switching,stilwell-interpolation,yoon-gain-scheduling-minimax}
+non-constructively assert the existence of a finite cover
+by continuity and compactness arguments.
+To address the need for small covers,
+\citet{anderson-coverings,mcnichols-selecting-discrete,tan-selecting,fekri-issues,du-multimodel-integrated}
+propose constructive algorithms for various classes of $\Envs$,
+sometimes with arguments for minimality
+but without bounds on the covering number.
+\citet{jalali-multimodel-vinnicombe}
+bound covering numbers in terms of frequency-domain properties of $\Envs$
+as opposed to state-space parameters like mass and geometry.
+The most closely related work to ours is from \citet{fu-minimum-switching},
+who shows a tight bound of $2^n$
+for the stability covering number
+of a relatively broad $\Envs$. %
+This result is complementary to ours:
+suboptimality is a stronger criterion than stability,
+but our class of $\Envs$ is more restrictive.
+We are not aware of prior work that bounds covering numbers in a setup based on local suboptimality,
+as opposed to a single global performance measure.
+
+
+
+\Multienv\ control is also a popular topic in deep learning research,
+where it is often motivated by ideas of lifelong skill acquisition in robotics.
+Domain randomization methods
+follow the spirit of robust control
+\citep{peng-dynamics-randomization-corr17},
+but usually optimize for the average case instead of a worst-case guarantee.
+Many methods where the policy observes $\env$
+use architectural constructs that can only be applied to finite \envword\ sets
+\citep{yang-multitask,parisotto-actormimic,devin-modular}.
+A common approach for infinite \envword\ spaces is to treat $\env$ as a vector input alongside the system state.
+\citet{yu-up-osi-rss17,chen-hardware-conditioned}
+use this approach for dynamics parameters;
+\citet{schaul-uvfa} use it for navigation goals.
+There is evidence that policy class influences these methods:
+in a recent benchmark %
+\citep{yu-metaworld},
+the concatenated-input architecture
+trails the finite-task architecture.
+Other investigations into the difficulty of learning policies for \multienv\ control include
+methods to condition the \multienv\ optimization landscape
+\citep{yu-pcgrad}
+or balance disparate cost ranges
+\citep{hasselt-popart}.
+
+

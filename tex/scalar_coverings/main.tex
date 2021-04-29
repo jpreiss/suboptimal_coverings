@@ -1,0 +1,105 @@
+\documentclass[12pt]{l4dc2021}
+\usepackage{times}
+
+\makeatletter
+\def\set@curr@file#1{\def\@curr@file{#1}} %
+\makeatother
+
+\usepackage{enumitem}
+\usepackage{mathdots}
+\usepackage{hyperref}
+\usepackage{mathrsfs}
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+\usepackage{wrapfig}
+\usepackage{adjustbox}
+\usepackage{thmtools, thm-restate}
+
+\usepackage{jptext}
+\usepackage{jpmath}
+\input{../preamble.tex}
+
+\graphicspath{{figures/}{tikz/}}
+
+\usepackage[utf8]{inputenc}
+\DeclareUnicodeCharacter{2212}{-}
+\renewcommand{\sffamily}{}
+
+\newcommand\inputpgf[2]{{
+\let\pgfimageWithoutPath\pgfimage
+\renewcommand{\pgfimage}[2][]{\pgfimageWithoutPath[##1]{#1/##2}}
+\input{#1/#2}
+}}
+
+\getenv[\ABRIDGED]{ABRIDGED}
+\newcommand\ifextended[2]{%
+   \ifdefstring{\ABRIDGED}{true}{%
+      #2%
+   }{%
+      #1%
+   }%
+}
+
+\ifextended{
+}{
+   \jmlrvolume{vol 144}
+   \jmlryear{2021}
+   \jmlrproceedings{PMLR}{Proceedings of Machine Learning Research}
+}
+
+\declaretheorem[sibling=theorem, name=Lemma]{lemma2}
+
+
+\title{%
+	Suboptimal coverings for continuous spaces of control tasks
+}
+\author{%
+   \Name{James A. Preiss} \Email{japreiss@usc.edu} \and
+   \Name{Gaurav S. Sukhatme} \Email{gaurav@usc.edu} \\
+   \addr{University of Southern California, Los Angeles, USA}
+   \thanks{Gaurav S. Sukhatme holds concurrent appointments as a Professor at USC and as an Amazon Scholar. This paper describes work performed at USC and is not associated with Amazon.}
+}
+\date{\today}
+
+
+\begin{document}
+
+\maketitle
+
+\input{abstract.tex}
+
+\section{Introduction}
+\input{introduction.tex}
+
+\section{Problem setting}
+\input{setting.tex}
+
+\paragraph{Standard LQR problem}
+\input{lqr.tex}
+
+\section{Theoretical results}
+\input{results_scalar.tex}
+
+\section{Empirical results}
+\input{empirical_upperbound.tex}
+
+\subsection{Suboptimal neighborhood visualizations}
+\input{empirical_lowerbound.tex}
+
+\section{Related work}
+\input{related.tex}
+
+\section{Conclusion and future work}
+\input{conclusion.tex}
+
+\newpage
+\bibliography{math, lqr, deep, rl}
+
+\ifextended{
+   \newpage
+   \appendix
+   \section{Extended theoretical results}
+   \input{appendix.tex}
+}
+
+\end{document}

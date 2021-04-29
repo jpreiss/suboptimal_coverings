@@ -1,0 +1,62 @@
+% Non-math stuff that can be shared between article and beamer.
+% and regular articles.
+
+\PassOptionsToPackage{dvipsnames}{xcolor}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{booktabs}
+\usepackage{cleveref}
+\usepackage{color}
+\usepackage{comment}
+\usepackage{datetime}
+\usepackage{framed}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{multicol}
+%\usepackage{subcaption}
+\usepackage{tcolorbox}
+\usepackage{url}
+\usepackage{xparse}
+
+% For documents when the particular day is not important.
+\newdateformat{monthyear}{\monthname[\THEMONTH] \THEYEAR}
+
+% Draft annotation tools.
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{TODO: #1}}}
+\newcommand{\idea}[1]{\textcolor{ProcessBlue}{\textbf{IDEA: #1}}}
+
+% Hyphenations.
+\hyphenation{Open-AI}
+
+% Page layout tools.
+\newtcolorbox{boxnote}{%
+	colback=black!8!white,
+	colframe=black,
+	sharp corners,
+	rightrule=0.15mm,
+	toprule=0.15mm,
+	leftrule=0.15mm,
+	bottomrule=0.15mm,
+	beforeafter skip=8mm
+}
+
+
+% Environment variable access.
+
+\ExplSyntaxOn
+\NewDocumentCommand{\getenv}{om}
+ {
+  \sys_get_shell:nnN { kpsewhich ~ --var-value ~ #2 } { } \l_tmpa_tl
+  \tl_trim_spaces:N \l_tmpa_tl
+  \IfNoValueTF { #1 }
+   {
+    \tl_use:N \l_tmpa_tl
+   }
+   {
+    \tl_set_eq:NN #1 \l_tmpa_tl
+   }
+ }
+\ExplSyntaxOff
+
+% Usage: \getenv[\HOME]{HOME}\show\HOME

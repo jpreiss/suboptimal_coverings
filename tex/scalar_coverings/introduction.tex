@@ -1,0 +1,58 @@
+An advanced control system such as a mobile robot may be required to perform many different tasks.
+If the \envword\ set is finite, like selecting between ``map an environment'' and ``deliver a package'',
+then its size is naturally quantified by the number of \envwords.
+If the \envword\ set is infinite, like delivering packages with arbitrary mass and inertial properties,
+then its size is not so easily quantified.
+Even if the task space is equipped with a metric or measure,
+these structures may be only weakly linked to the diversity of behavior
+required for good performance on all \envwords.
+
+Our interest in this issue is motivated by \multienv\ paradigms in learning-based control,
+where the policy is selected from a parameterized family of functions
+that map state and \envword\ parameters directly to actions.
+As the \envword\ space expands from a singleton set,
+we expect to need a more expressive class of functions
+to represent a good \multienv\ policy.
+In this work, we propose the 
+\emph{$\alpha$-suboptimal covering number}
+to capture this idea. %
+For a \envword\ space $\Envs$
+and a suboptimality ratio $\alpha > 1$,
+we define $\coveringnum{\alpha}{\Envs}$ as
+the size of the smallest set of \singleenv\ policies $\coveringset$ %
+such that for every $\env \in \Envs$, at least one $\pi \in \coveringset$
+has a cost ratio no greater than $\alpha$ relative to the optimal policy for $\env$.
+If the policies in $\coveringset$ are parameterized functions,
+then $\coveringset$ provides an upper bound on the number of parameters
+needed to represent an $\alpha$-suboptimal \multienv\ policy.
+In switching-based adaptive control, where $\env$ is unknown,
+a smaller $\coveringset$ implies a faster convergence time.
+
+To study suboptimal covering numbers in a concrete setting,
+we consider linear dynamical systems
+with quadratic cost functions, or LQR problems.
+LQR problems are a common setting to analyze learning algorithms because detailed properties are known \citep[for example]{fazel-global-lqr}.
+This has led to new inquiries into their fundamental properties \citep{bu-topological-gains}.
+We construct a family of well-behaved \multienv\ LQR problems 
+where $\Envs$ is controlled by a ``breadth'' parameter $\breadth \in [1, \infty)$,
+and for which
+$\coveringnum{\alpha}{\Envs_\breadth}$
+is finite and increasing in $\breadth$.
+For the special case of a scalar LQR problem,
+we derive matching logarithmic upper and lower bounds on
+$\coveringnum{\alpha}{\Envs_\breadth}$
+as a function of $\breadth$.
+As an effort towards analogous bounds for the matrix case,
+we present empirical results intended to shed light on the problem structure.
+For the upper bound, we analyze properties of a logical extension of our scalar cover.
+For the lower bound, we visualize suboptimal neighborhoods for two choices of ``extremal''  systems,
+revealing surprising topological behavior for one choice.
+
+This paper is an initial step towards a comprehensive theory.
+In addition to a more complete picture of deterministic LQR systems,
+ideas of $\alpha$-suboptimal coverings could be applied to a wide range of \multienv\ problems.
+We also hope they will lead to insights
+about function class expressiveness in learning-based \multienv\ control.
+
+
+

@@ -1,0 +1,109 @@
+\label{sec:matrix-lb-ideas}
+
+We now present intuition-building experiments towards a covering number lower bound
+for matrix \DDFproblems.
+A lower bound requires
+a class of \DDFproblem\
+that can be instantiated for any dimensionality $d$.
+Two ``extremal'' systems come to mind:
+\emph{minimum coupling},
+where $A = \textstyle I$,
+and \emph{maximum coupling},
+where $A = \textstyle \recip n \one$.
+Note that for minimum coupling,
+an $\alpha$-suboptimal policy
+is not necessarily $\alpha$-suboptimal on each scalar subsystem---%
+if it were, the lower bound $\log (\theta)^d$ would trivially follow
+from the results in \Cref{sec:results-scalar}.
+
+
+
+
+\label{sec:2d-visualization}
+
+\begin{figure}[t]
+	\(
+		\hspace{7mm}
+		\overbrace{\hspace{65mm}}^{A \mathop{=} I}
+		\hspace{10mm}
+		\overbrace{\hspace{65mm}}^{A \mathop{=} \recip n \one}
+	\)
+	\adjustbox{clip,trim=4.5mm 1mm 0 4.5mm}{
+		\inputpgf{figures}{neighborhoods_2x2.pgf}
+	}
+	\vspace{-2mm}
+	\caption{
+		$\alpha$-suboptimal neighborhoods
+		for geometric grid partition in 2D system.
+		\emph{Left:}
+		minimum coupling; $A = I$.
+		\emph{Right:}
+		maximum coupling; $A = \recip n \one$.
+		\emph{Columns:} varying suboptimality threshold $\alpha$.
+		All axes are logarithmic. %
+		Colors have no meaning.
+		Discussion in \Cref{sec:2d-visualization}.
+	}
+	\label{fig:neighborhoods-2x2}
+\end{figure}
+
+
+We show approximate suboptimal neighborhoods
+for a two-dimensional system in \Cref{fig:neighborhoods-2x2}.
+We select a geometric grid of $\Sigma$ values (indicated by the circular markers)
+and synthesize their LQR-optimal controllers.
+Then, we evaluate the suboptimality ratio of each controller on a finer grid of $\Sigma$ values
+to get approximate neighborhoods, indicated by the semi-transparent regions.
+We repeat this experiment
+with three values of $\alpha$
+for both choices of $A$.
+
+Interestingly, the neighborhoods for $A=I$ are not always connected.
+In the plot for ${\alpha = 1.05}$ (far left),
+the neighborhood for the minimal $\Sigma$
+has another component that overlaps other neighborhoods
+to its top and right.
+If we increase to $\alpha = 1.1$,
+the components join
+into an ``L''-shaped region.
+In contrast, the neighborhoods for $A = \recip n \one$ seem more well-behaved.
+For both choices of $A$,
+the neighborhoods are of comparable size.
+
+
+To verify that this behavior %
+is not an artifact of the two-dimensional case only,
+we repeat the experiment in three dimensions.
+\Cref{fig:neighborhoods-3x3} shows neighborhoods
+of one controller $K = \Kopt{(2/\theta) I}$
+for $\alpha$ ranging from $1.04$ to $1.2$.
+As $\alpha$ grows, $\suboptneighb{\alpha}{K}$ shows similar topological phases as the $2$D case.
+In the simply-connected phase (large $\alpha$),
+the neighborhood appears to include
+any $\Sigma$ where at least one $\sigma_i$ is sufficiently small.
+If this property holds in higher dimensions,
+then it would be possible
+to construct a cover using only controllers of uniform gain in all dimensions
+for large $\alpha$.
+
+\begin{figure}[t]
+	\hfill
+	\foreach \alpha in {1.0367,1.0526,1.0852,1.1137,1.2000}
+	{
+		\includegraphics[width=0.17\textwidth,trim={60px 130px 80px 160px},clip]{neighborhoods_3x3/alpha_\alpha.png}
+		\hfill
+	}
+	\caption{%
+		$\alpha$-suboptimal neighborhoods for the three-dimensional decomposed dynamics system with
+		minimal coupling
+		($A = U = V^\top = I_{3 \times 3}$)
+		and breadth $\breadth = 100$.
+		Neighborhoods shown for
+		$\alpha$ ranging from $1.04$ to $1.2$
+		with a fixed
+		controller.
+	}
+	\label{fig:neighborhoods-3x3}
+\end{figure}
+
+

@@ -1,0 +1,97 @@
+
+\providecommand{\eps}{}
+\renewcommand{\eps}{\varepsilon}
+
+\newcommand{\bu}{\mathbf{u}}
+\newcommand{\bmu}{\boldsymbol\mu}
+\newcommand{\bsigma}{\boldsymbol\sigma}
+\newcommand{\bSigma}{\boldsymbol\Sigma}
+\newcommand{\avg}{\mathrm{avg}}
+\newcommand{\worst}{{\max}}
+
+\newcommand{\Kopt}[1]{K^\star_{#1}}
+\newcommand{\kopt}[1]{k^\star_{#1}}
+
+\newcommand{\netparam}{\psi}
+\newcommand{\breadth}{\theta}
+\newcommand{\horizon}{H}
+\newcommand{\Envs}{\Phi}
+\newcommand{\env}{\phi}
+\newcommand{\envdist}{P}
+\newcommand{\lipconst}{G}
+\newcommand{\spectrum}[1]{\Lambda(#1)}
+\newcommand{\radius}[1]{\rho(#1)}
+\newcommand{\perturb}{\mu}
+\newcommand{\perturbation}[1]{\mu_{#1}}
+\newcommand{\errorbound}{\varepsilon_u}
+\newcommand{\epsclose}{$\errorbound$-close}
+\newcommand{\seqspace}[1]{\cS(#1)}
+\newcommand{\perturbationcost}[2]{J(#1, #2)}
+\newcommand{\resolventconst}{M}
+\newcommand{\boundedinputs}{\mathbb{U}}
+\newcommand{\pirobust}{\pi_{\text{robust}}}
+\newcommand{\piadaptiveopt}{\pi^\star}
+\newcommand{\Refpolicies}{\Pi_{\mathrm{ref}}}
+
+\newcommand{\envword}{task}
+\newcommand{\envwords}{tasks}
+\newcommand{\multienv}{multi-task}
+\newcommand{\Multienv}{Multi-task}
+\newcommand{\singleenv}{single-task}
+\newcommand{\Singleenv}{Single-task}
+%\newcommand{\multitask}{multi-task}
+%\newcommand{\Multitask}{Multi-task}
+\newcommand{\multidyn}{multi-dynamics}
+\newcommand{\Multidyn}{Multi-dynamics}
+\newcommand{\DDFproblem}{DDF problem}
+\newcommand{\DDFproblems}{DDF problems}
+
+
+\newcommand{\learnalg}{g}
+\newcommand{\synthesis}{S}
+
+\newcommand{\leftopen}{\mathbb{H}^{-}}
+\newcommand{\stable}[1]{\spectrum{#1} \subseteq \leftopen}
+
+% TODO: introduce in paper
+\newcommand{\notstable}[1]{\spectrum{#1} \not \subseteq \leftopen}
+\newcommand{\maxreal}[1]{\sigma(#1)}
+
+
+\newcommand{\Aset}{\mathbf{A}}
+\newcommand{\Bset}{\mathbf{B}}
+\newcommand{\ABK}{(A + BK)}
+\newcommand{\transfermax}{\gamma} % TODO better name
+\newcommand{\envdim}{p}
+\newcommand{\nndepth}{H}
+
+\newcommand{\train}{preparation}
+\newcommand{\test}{test}
+\newcommand{\MDP}{Markov decision process}
+% Suboptimal coverings
+\newcommand{\subopt}{\alpha}
+\newcommand{\suboptneighb}[2]{\mathscr{N}_{#1}(#2)}
+\newcommand{\coveringset}{\cC}
+\newcommand{\coveringnum}[2]{N_{#1}(#2)}
+\newcommand{\kcritical}{\widetilde k}
+
+\newcommand{\ratiolb}{\tilde r}
+
+% Sigmas (diagonal matrices)
+\newcommand{\SigmaMin}{\Sigma_{\min}}
+\newcommand{\SigmaMax}{\Sigma_{\max}}
+\newcommand{\SigmaMid}{\Sigma_{\mathrm{mid}}}
+\newcommand{\DiagScale}[2]{S_{#1}^{#2}}
+
+% Riccati etc.
+\newcommand{\Ric}{\mathrm{Ric}}
+\newcommand{\GCC}{{\normalfont \texttt{GCC}}}
+
+% Quadrotor.
+\newcommand{\pos}{\mathbf{x}}
+\newcommand{\vel}{\mathbf{v}}
+\newcommand{\attitude}{\mathbf{r}}
+\newcommand{\anglevel}{\boldsymbol{\omega}}
+\newcommand{\roll}{\phi}
+\newcommand{\pitch}{\theta}
+\newcommand{\yaw}{\psi}

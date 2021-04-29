@@ -1,0 +1,318 @@
+\label{sec:appendix-theory}
+
+This appendix contains the proof for \lemmaref{lem:subopt-convex}.
+We first present some supporting material.
+
+\subsection{Supporting material}
+We begin by recalling the definition and properties of quasiconvex functions on $\R$.
+We then recall some basic facts about scalar LQR.
+
+\begin{definition}
+	A function $f : \cD \mapsto \R\ $ on the convex domain $\ \cD \subseteq \R^n$
+	is \emph{quasiconvex} if its sublevel sets
+	\(
+		\cD_\alpha = \{ x \in \cD : f(x) \leq \alpha \}
+	\)
+	are convex for all $\alpha \in \R$.
+\end{definition}
+
+\begin{lemma}[\citet{boyd-convex}, \S 3.4]
+\label{lem:quasiconvex}
+	The following facts hold for quasiconvex functions on a convex $\cD \subseteq \R$:
+	\begin{enumerate}[label=(\alph*)]
+		\item \label{alternatives}
+			If $f: \R \mapsto \R$ is continuous,
+			then $f$ is quasiconvex
+			if and only if at least one of the following conditions holds on $\cD$:
+			\begin{enumerate}[label=\arabic*.]
+				\item $f$ is nondecreasing.
+				\item $f$ is nonincreasing.
+				\item \label{alternative-incdec}
+					There exists $c \in \cD$ such that
+					for all $t \in \cD$,
+					if $t < c$ then $f$ is nonincreasing,
+					and if $t \geq c$ then $f$ is nondecreasing.
+			\end{enumerate}
+		\item \label{secondorder}
+			If $f : \R \mapsto \R$ is twice differentiable
+			and
+			$\partial^2 f / \partial x^2 > 0$
+			for all $x \in \cD$ where
+			$\partial f / \partial x = 0$,
+			then $f$ is quasiconvex on $\cD$.
+		\item \label{quotient}
+			If $f(x) = p(x) / q(x)$,
+			where $p: \R \mapsto \R$ is convex with $p(x) \geq 0$ on $\cD$
+			and $q: \R \mapsto \R$ is concave with $q(x) > 0$ on $\cD$,
+			then $f$ is quasiconvex on $\cD$.
+	\end{enumerate}
+\end{lemma}
+
+\noindent The following facts about scalar LQR problems can be derived from
+the LQR Riccati equation and some calculus (not shown).
+\begin{lemma}
+\label{lem:scalar-lqr-facts}
+For the scalar LQR problem with $a > 0, b > 0$ and $q = r = 1$,
+the optimal linear controller $\kopt{a,b}$ is given by the closed-form expression
+	\[
+		k^\star_{a,b}
+		=
+		\min_{k \in \R} J_{a,b}(k)
+		=
+		\min_{k \in \R} \frac{1 + k^2}{-2(a + bk)}
+		=
+		-\frac{a + \sqrt{a^2 + b^2}}{b}.
+	\]
+For fixed $a$, the map from $b$ to $k^\star_{a,b}$
+is continuous and strictly increasing on the domain $b \in (0, \infty)$
+and has the range $(-\infty, -1)$.
+For any $k \in (-\infty, -1)$,
+there exists a unique $b_k \in (-\infty, -1)$
+for which $k = k^\star_{a,b_k}$, given by
+\[
+	b_k = \frac{2ak}{1 - k^2}.
+\]
+\end{lemma}
+
+\newcommand{\bkdomain}{\cD}
+\newcommand{\bdomain}{\cD^b}
+\newcommand{\kdomain}{\cD^k}
+
+\subsection{Proof of \lemmaref{lem:subopt-convex}}
+
+We first recall the statement of the lemma.
+\quasi*
+
+\noindent Instead of a monolithic proof,
+we present supporting material in \lemmaref{lem:ratio-quasi,lem:cost-quasi}.
+We then show the main result in \lemmaref{lem:increasing-main},
+which considers $\alpha$-suboptimal neighborhoods on all of $\R$
+instead of restricted to $\Bset$.
+\lemmaref{lem:subopt-convex} will follow as a corollary.
+
+We proceed with more setup.
+Recall that the scalar \DDFproblem\ is defined by
+$\Aset = \{a\}$ and $\Bset = [\recip \theta, 1]$, where $a > 0$.
+For this section,
+let
+\[
+	\bkdomain
+	= \{ (b, k) \in (0, \infty) \times \R : a + bk < 0 \}
+\]
+(note that $J_b(k) < \infty \iff a + bk < 0$).
+Denote its projections by
+$\bdomain(k) = \{ b: (b, k) \in \bkdomain \}$
+and
+$\kdomain(b) = \{ k: (b, k) \in \bkdomain \}$.
+We compute the suboptimality ratio $r : \bkdomain \mapsto \R$ by
+\[
+	r(b, k) =
+	\frac{J_b(k)}{J^\star_b}
+	=
+	\nofrac{
+		\frac{
+			1 + k^2
+		}{
+			-2(a + bk)
+		}
+	}{
+		\frac{
+			a + \sqrt{a^2 + b^2}
+		}{
+			b^2
+		}
+	}
+	=
+	\frac{
+		(1 + k^2) b^2
+	}{
+		-2(a + bk)(a + \sqrt{a^2 + b^2})
+	}.
+\]
+We denote its sublevel sets with respect to $b$ for fixed $k$ by
+\[
+	\bdomain_\alpha(k) = \{ b \in \bdomain(k) : r(b, k) \leq \alpha \}.
+\]
+\begin{lemma}
+\label{lem:ratio-quasi}
+	For fixed $k < 0$, the ratio $r(b, k)$ is quasiconvex on $\bdomain_k$,
+	and there is at most one $b \in \bdomain_k$ at which $\partial r / \partial b = 0$.
+\end{lemma}
+\begin{proof}
+	By inspection, $r(b, k)$ is smooth on $\bdomain$.
+	We now show that the second-order condition of \lemmaref{lem:quasiconvex}\ref{secondorder} holds.
+	\input{ratio_intervals_proof.tex}
+	The conclusion follows from \lemmaref{lem:quasiconvex}\ref{secondorder}.
+\end{proof}
+
+\begin{lemma}
+\label{lem:cost-quasi}
+	For fixed $b$, the cost $J_b(k)$ is quasiconvex on $\kdomain(b)$.
+	Also, $J_b(k)$ is not monotonic,
+	so case \ref{alternative-incdec} of \lemmaref{lem:quasiconvex}\ref{alternatives} applies.
+\end{lemma}
+\begin{proof}
+	We have
+	\[
+		J_b(k)
+		=
+		\frac{
+			1 + k^2
+		}{
+			-2(a + bk)
+		}.
+	\]
+	The numerator is nonnegative and convex on $k \in \R$.
+	The denominator is linear (hence concave) and positive on $\kdomain(b)$.
+	Quasiconvexity follows from \lemmaref{lem:quasiconvex}\ref{quotient}.
+	Nonmonotonicity follows from the fact that $J_b(k)$ is smooth on $\kdomain(b)$
+	and has a unique optimum at $\kopt{b}$, which is not on the boundary of $\kdomain(b)$.
+\end{proof}
+
+\noindent We now combine these into the main result.
+
+\begin{lemma}
+\label{lem:increasing-main}
+	For a scalar \DDFproblem,
+	if $\alpha > 1$ and $k < -1$,
+	then $\bdomain_\alpha(k)$ is either:
+	a bounded closed interval $[b_1, b_2]$,
+		with $b_1$ and $b_2$ increasing in $k$, or
+	a half-bounded closed interval $[b_1, \infty)$,
+		with $b_1$ increasing in $k$.
+\end{lemma}
+
+\begin{proof}
+	By \lemmaref{lem:ratio-quasi}, due to quasiconvexity $\bdomain_\alpha$ is convex.
+	The only convex sets on $\R$ are the empty set and all types of intervals:
+	open, closed, and half-open.
+	We know $\bdomain_\alpha$ is not empty because it contains $b_k$.
+	We can further assert that
+	$\bdomain_\alpha$ has a closed lower bound
+	because $\lim_{b \to (-a/k)} r(b, k) = \infty$
+	(see \citet[\S A.3.3]{boyd-convex} for details).
+	However, the upper bound may be closed or infinite.
+	We handle the two cases separately.
+
+	\paragraph{Bounded case.}
+	Fix $k_0 < -1$.
+	Suppose $\bdomain_\alpha(k_0) = [b_1, b_2]$ for $0 < b_1 < b_2 < \infty$.
+	By the implicit function theorem (IFT), at any $(b_0, k_0)$ satisfying $r(b_0, k_0) = \alpha$,
+	if $\partial r / \partial b|_{b_0, k_0} \neq 0$
+	then there exists an open neighborhood around $(b_0, k_0)$
+	for which the solution to $r(b, k) = \alpha$ can be expressed as
+	$(g(k), k)$, where $g$ is a continuous function of $k$ and
+	\[
+		\left. \frac{\partial g(k)}{\partial k} \right|_{k_0} =
+		\left. - \left( \frac{\partial r}{\partial b} \right)^{-1}
+		\frac{\partial r}{\partial k} \right|_{b_0, k_0}.
+	\]
+	By the continuity and quasiconvexity of $r$,
+	and the fact that $\partial r / \partial b = 0$ only at $b_k$
+	(\lemmaref{lem:ratio-quasi})
+	we know that $r(b_1, k_0) = r(b_2, k_0) = \alpha$
+	and
+	\[
+		\left. \frac{\partial r}{\partial b} \right|_{b_1, k_0} < 0
+		\quad \text{and} \quad
+		\left. \frac{\partial r}{\partial b} \right|_{b_2, k_0} > 0.
+	\]
+	By \lemmaref{lem:scalar-lqr-facts},
+	since $k < -1$
+	there exists $b_k > 0$ satisfying
+	$k = k^\star_{b_k}$.
+	Since $r(b_k, k) = 1$ and $\alpha > 1$, we know $b_{k_0} \in (b_1, b_2)$.
+	Again by \lemmaref{lem:scalar-lqr-facts},
+	the map from $b$ to $k^\star_b$ is increasing in $b$.
+	Therefore,
+	\(
+		{k^\star_{b_1} < k_0 < k^\star_{b_2}}.
+	\)
+	By the quasiconvexity and nonmonotonicity of $J_b(k)$ from \lemmaref{lem:cost-quasi},
+	via \lemmaref{lem:quasiconvex}\ref{alternatives}
+	we have
+	\[
+		\left. \frac{\partial r}{\partial k} \right|_{b_1, k_0} \geq 0
+		\quad \text{and} \quad
+		\left. \frac{\partial r}{\partial k} \right|_{b_2, k_0} \leq 0.
+	\]
+	Therefore, the functions $g_1, g_2$ satisfying the conclusion of the IFT
+	in the neighborhoods around $(b_1, k_0)$ and $(b_2, k_0)$ respectively
+	also satisfy
+	\[
+		\left. \frac{ \partial g_1(k)}{ \partial k } \right|_{b_1, k_0} \geq 0
+		\quad \text{and} \quad
+		\left. \frac{ \partial g_2(k)}{ \partial k } \right|_{b_2, k_0} \geq 0.
+	\]
+	Therefore, $b_1$ and $b_2$ are locally nondecreasing in $k$.
+	
+
+	\paragraph{Unbounded case.}
+	Suppose $\bdomain_\alpha(k) = [b_1, \infty)$ for $b_1 < \infty$.
+	By the same IFT argument as in the bounded case, $b_1$ is increasing in $k$.
+	By the quasiconvexity of $r$ in $b$,
+	the value of $r$ is increasing for $b  > b_k$,
+	but the definition of $\bdomain_\alpha(k)$ implies that
+	$r(b, k) \leq \alpha$ for all $b > b_k$.
+	Therefore, $\lim_{b \to \infty} r(b, k)$ exists
+	and is bounded by $\alpha$.
+	In particular,
+	\begin{equation*}
+		\begin{split}
+			\lim_{b \to \infty} r(b, k)
+			&=
+			\lim_{b \to \infty}
+			\frac{
+				(1 + k^2) b^2
+			}{
+				-2(a + bk)(a + \sqrt{a^2 + b^2})
+			}
+			\\ &=
+			\lim_{b \to \infty}
+			\frac{
+				(1 + k^2) b^2 / b^2
+			}{
+				-2(a + bk)(a + \sqrt{a^2 + b^2}) / b^2
+			}
+			\\ &=
+			-
+			\frac{
+				1 + k^2
+			}{
+				2k
+			}.
+		\end{split}
+	\end{equation*}
+	Taking the derivative shows that this value is decreasing in $k$ for $k < 0$.
+	Therefore, if $k < k' < 0$ then
+	\[
+		\lim_{b \to \infty} r(b, k') \leq \lim_{b \to \infty} r(b, k) \leq \alpha.
+	\]
+	The property that $r(b, k')$ is increasing in $b$ for $b > b_k$
+	further ensures that
+	$r(b, k') \leq \alpha$ for all $b > b_k$.
+	Therefore, $\bdomain_\alpha(k')$ is also unbounded.
+\end{proof}
+
+\noindent For completeness, we prove \lemmaref{lem:subopt-convex}.
+
+\quad
+
+\begin{proof} (of \lemmaref{lem:subopt-convex}).
+	By \lemmaref{lem:increasing-main},
+	$\bdomain_\alpha(k)$ is either
+	a bounded closed interval $[b_1, b_2]$,
+		with $b_1$ and $b_2$ increasing in $k$, or
+	a half-bounded closed interval $[b_1, \infty)$,
+		with $b_1$ increasing in $k$.
+	Recall that $\suboptneighb{\alpha}{k} = \bdomain_\alpha(k) \cap \Bset$
+	with $\Bset = [\recip \theta, 1]$.
+	Therefore, the half-bounded case can be reduced to the bounded case with $b_2 = 1$.
+	The intersection can be expressed as
+	\[
+		\suboptneighb{\alpha}{k} = [\max\{b_1, \textstyle \recip \theta\}, \min\{b_2, 1\}],
+	\]
+	where the interval $[a, b]$ is defined as the empty set if $a > b$.
+	Taking the maximum or minimum of a nonstrict monotonic function and a constant
+	preserves the monotonicity, so we are done.
+\end{proof}

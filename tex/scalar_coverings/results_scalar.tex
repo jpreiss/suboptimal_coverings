@@ -1,0 +1,397 @@
+\label{sec:results-scalar}
+
+
+In this section we show logarithmic upper and lower bounds on
+the growth of $\coveringnum{\alpha}{\Envs_\breadth}$ in $\breadth$
+for scalar \DDFproblems.
+We present several intermediate results in matrix form because they are needed for our empirical results later.
+We begin with a key lemma in the framework of
+\emph{guaranteed cost control} (GCC)
+from \citet{petersen-guaranteed-cost},
+simplified for our use case.
+
+\begin{lemma}[GCC synthesis, \citet{petersen-guaranteed-cost}]
+\label{lem:petersen-gcc}
+	Given the \multienv\ LQR problem
+		$\Aset = \{ A \}$,
+		$\Bset = \{ B_1 \Delta + B_2 : \norm{\Delta} \leq 1 \}$,
+	where $B_1, B_2 \in \R^{m \times p}$ are arbitrary for arbitrary $p$,
+	and the state cost matrix is $Q \succ \zero$,
+	if there exists $\tau > 0$ such that $P \succ \zero$ solves the Riccati equation
+	\begin{equation}
+	\label{eq:petersen-riccati}
+		A^\top P + P A
+		+ P \left(
+			\textstyle \recip \tau B_1 B_1^\top - \recip{1+\tau} B_2 B_2^\top
+		\right) P
+		+ Q = \zero,
+	\end{equation}
+	then the controller
+	\(
+		K = -\recip{1 + \tau} B_2^\top P
+	\)
+	has cost $J_B(K) \leq \trace{P}$
+	for all $B \in \Bset$.
+	Also, $\trace{P}$ is a convex function of $\tau$.
+\end{lemma}
+
+
+
+We use the notation
+\(
+	P, \tau, K = \GCC(A, B_1, B_2, Q)
+\)
+to indicate that $P, \tau$ solve
+\eqref{eq:petersen-riccati}
+and $K$ is the corresponding controller.
+It is straightforward to show that any \DDFproblem\
+can be expressed in the form required by \lemmaref{lem:petersen-gcc}
+with additional constraints on $\Delta$.
+
+In the original presentation, \citet{petersen-guaranteed-cost} treat $B_1$ as given,
+so they accept that
+\eqref{eq:petersen-riccati} may have no solution
+(for example, when $A = 2I, B_1 = I, B_2 = \zero$).
+Our application requires constructing values of $B_1, B_2$ that guarantee a solution,
+motivating the following lemma.
+\defcitealias{lancaster-AREs}{Lan95}
+We abbreviate the reference text \citet{lancaster-AREs} as \citetalias{lancaster-AREs}.
+
+
+
+\begin{lemma}[existence of $\alpha$-suboptimal GCC]
+\label{lem:petersen-existence}
+	For the \DDFproblem\ $(A, U, V, \theta)$, if $B \in \Bset$ and $\alpha > 1$,
+	then there exists $B_1 \neq \zero \in \R^{m \times n}$
+	such that the GCC Riccati equation \eqref{eq:petersen-riccati}
+	with $B_2 = B$
+	has a solution $(P, \tau)$
+	satisfying
+	$\trace{P} \leq \alpha J^\star_{B}$.
+\end{lemma}
+\begin{proof}
+	For this proof, it will be more convenient to write the algebraic Riccati equation as
+	\begin{equation}
+		\label{eq:existence-ric}
+		A^\top P + P A - P D P + Q = \zero,
+	\end{equation}
+	where $D \succeq \zero$.
+	Let $\cD = \{ D \succeq \zero: (A, D)\ \text{ is controllable} \}$.
+	Controllability of $(A, B)$
+	implies that
+	$BB^\top \in \cD\ $
+	\citepalias[Corollary 4.1.3]{lancaster-AREs}.
+	Let $\Ric_+$ denote the map from $\cD$ to the
+	maximal solution of \eqref{eq:existence-ric},
+	which is continuous %
+	\citepalias[Theorem 11.2.1]{lancaster-AREs},
+	and let $\cD_\alpha = \{D \in \cD : \trace{\Ric_+(D)} < \alpha J^\star_B \}$.
+	The set $\cD_\alpha$ is open in $\cD$ by continuity
+	and is nonempty because it contains $BB^\top$.
+	Now define $B_1(\tau) = \tau B$ for $\tau \in (0, \half)$.
+	The equivalent of $D$ in the GCC Riccati equation \eqref{eq:petersen-riccati} becomes
+	\[
+		\textstyle D(\tau) = -\recip \tau B_1(\tau) B_1(\tau)^\top + \recip{1 + \tau} B_2 B_2^\top
+		= \frac{1 - \tau - \tau^2}{1 + \tau} B B^\top.
+	\]
+	As a positive multiple of $B B^\top$, we know $D(\tau) \in \cD$,
+	and because $\lim_{\tau \to 0} D(\tau) = B B^\top$,
+	the set of $\tau$ for which $D(\tau) \in \cD_\alpha$ is nonempty.
+	Any such $\tau$ and $B_1(\tau)$ provide a solution.
+\end{proof}
+
+\noindent Finally, the following comparison result
+will be useful in several places.
+
+\begin{lemma}[\citetalias{lancaster-AREs}, Corollary 9.1.6]
+\label{lem:lancaster-ARE-domination}
+\newcommand{\alt}[1]{\tilde #1}
+	Given two algebraic Riccati equations
+	\[
+		A^\top P + PA - P B B^\top P + Q = \zero
+		\quad \text{ and } \quad 
+		\alt{A}^\top P + P\alt{A} - P \alt{B}\alt{B}^\top P + \alt{Q} = \zero,
+	\]
+	with maximal solutions $P$ and $\alt{P}$,
+	let
+		$X = \bsmallmat{Q & A^\top \\ A & -BB^\top}$
+		and
+		$\alt{X} = \bsmallmat{\alt{Q} & \alt{A}^\top \\ \alt{A} & -\alt{B}\alt{B}^\top}$.
+	If $X \!\succeq \!\alt{X}$, then $P \!\succeq \!\alt{P}$.
+\end{lemma}
+
+\subsection{Scalar upper bound}
+
+We are now ready to bound the covering number for scalar systems.
+The first lemma bounding $J^\star_{a,b}$ will be useful for the lower bound also.
+We then construct a cover inductively.
+
+\begin{lemma}
+\label{lem:scalar-cost-ub}
+	In a scalar LQR problem,
+	if $a > 0$ and $0 < b \leq 1$,
+	then the optimal scalar LQR cost satisfies the bounds
+	\(
+		\nofrac{2a}{b^2}
+		<
+		J^\star_{a,b}
+		<
+		\nofrac{(2a + 1)}{b^2}.
+	\)
+\end{lemma}
+\begin{proof}
+	The lower bound is visible from
+	the closed-form solution for the scalar Riccati equation, which is
+	\(
+		J^\star_{a,b} = \frac{a + \sqrt{a^2 + b^2}}{b^2}.
+	\)
+	The upper bound is obtained by substituting $a^2 + b^2 \leq (a + 1)^2$.
+\end{proof}
+
+\begin{lemma}
+\label{lem:scalar-cover-recursion}
+	If $p, \tau, k = \GCC(a, b_1, b_2, q)$,
+	then for any $\beta \in (0, 1)$,
+	there exists $k' \in \R$
+	such that
+	$\displaystyle p', \tau, k' = \GCC \left( a, \beta b_1, \beta b_2, \beta^{-2} q \right)$,
+	where $\ p' = \beta^{-2} p$.%
+\end{lemma}
+\begin{proof}
+	In the scalar system,
+	the GCC matrix Riccati equation \eqref{eq:petersen-riccati}
+	reduces to the quadratic equation
+	\begin{equation}
+	\label{eq:scalar-ric}
+		\left(
+			\textstyle \recip \tau b_1^2
+			- \recip{1 + \tau} b_2^2
+		\right)
+		p^2
+		+ 2a p
+		+ q
+		= 0.
+	\end{equation}
+	Substituting $p' = \beta^{-2} p$ into \eqref{eq:scalar-ric}
+	and multiplying by $\beta^{-2}$ yields
+	a new instance of~\eqref{eq:scalar-ric}
+	with the parameters
+		$b_1' = \beta b_1$, \ 
+		$b_2' = \beta b_2$, \ 
+		$q' = \beta^{-2} q$,
+	for which $p'$ is a solution
+	with $\tau$ unchanged.
+\end{proof}
+
+
+\begin{theorem}
+\label{thm:covering-scalar}
+	For the scalar \DDFproblem\ defined by
+		$\Aset = \{ a \}$,
+		where $a > 0$,
+		and 
+		$\Bset = \left[\textstyle \recip \breadth, 1 \right]$,
+	if $\alpha \geq \frac{2a+1}{2a}$,
+	then $\coveringnum{\alpha}{\Bset} = O(\log \breadth)$.
+\end{theorem}
+\begin{proof}
+	We construct a cover from the upper end of $\Bset$.
+	By \lemmaref{lem:scalar-cost-ub},
+	the condition ${\alpha \geq \frac{2a+1}{2a}}$ implies that
+	\(
+		J^\star_{b=1} < \alpha 2 a < \alpha J^\star_{b=1}.
+	\)
+	Therefore, by
+	\lemmaref{lem:petersen-gcc,lem:petersen-existence},
+	there exists $\beta \in (0, 1)$
+	and
+	$p, \tau, k$
+	such that
+	$p, \tau, k = \GCC(a, (1-\beta)/2, (1+\beta)/2, 1)$
+	and
+	$p \leq \alpha 2a$.
+
+	Proceeding inductively,
+	suppose that for $N \geq 1$,
+	we have covered $[\beta^N, 1]$
+	by the intervals $\Bset_n = [\beta^{n+1}, \beta^{n}]$
+	for $n \in \{0, \dots, N-1\}$,
+	and each $\Bset_n$ has a controller $k_n$ such that 
+	\[
+		\beta^{-2n}p, \tau, k_n = \GCC \left(
+			a,
+			\nofrac{(\beta^{n} - \beta^{n+1})}{2},
+			\nofrac{(\beta^{n} + \beta^{n+1})}{2},
+			\beta^{-2n}
+		\right).
+	\]
+	Then the existence of the desired $\Bset_N, k_N$
+	follows immediately from
+	\lemmaref{lem:scalar-cover-recursion}.
+
+	By \lemmaref{lem:lancaster-ARE-domination},
+	for each $\Bset_n$
+	the GCC state cost $q_n = \beta^{-2n} \geq 1$
+	is an upper bound on the cost if we replace $q_n$ with $1$
+	to match the \DDFproblem.
+	Therefore,
+	for each interval $\Bset_n$,
+	for all $b \in \Bset_n$,
+	\[
+		\alpha J^\star_{b}
+		\geq
+		\alpha J^\star_{\beta^n}
+		>
+		\beta^{-2n} \alpha 2 a 
+		\geq
+		\beta^{-2n} p
+		\geq
+		J_b(k_n),
+	\]
+	where first inequality is due to \lemmaref{lem:lancaster-ARE-domination},
+	the second is due to \lemmaref{lem:scalar-cost-ub},
+	the third is by construction of $p$,
+	and last is due to the GCC guarantee of $k_n$.
+	Hence, $\Bset_n \subseteq \suboptneighb{\alpha}{k_n}$.
+	We cover the full $\Bset$ when
+	$\beta^{N} \leq \recip \theta$,
+	which is satisfied by $N \geq - \log \theta / \log \beta$.
+\end{proof} 
+
+\subsection{Scalar lower bound}
+
+For the matching lower bound,
+we begin by
+deriving a simplified overestimate of $\suboptneighb{\alpha}{k}$.
+We then show that the true $\suboptneighb{\alpha}{k}$
+is still a closed interval moving monotonically with $k$.
+Finally, we argue that
+the gaps between consecutive elements of a cover grow at most geometrically,
+while the range of $k$ values in a cover must grow linearly with $\breadth$.
+
+\begin{lemma}
+\label{lem:scalar-neighborhood-optimistic}
+	For a scalar \DDFproblem\ with $a \geq 1,\ \Bset = [\recip \breadth, 1]$,
+	for any $k < 0$,
+	if $\alpha \geq 3/2$, then
+	$\suboptneighb{\alpha}{k} \subseteq \recip{|k|} [c_1 \!- \!c_2,\ c_1\! + \!c_2]$,
+	where $c_1$ and $c_2$ are constants depending on $\alpha$ and $a$.
+\end{lemma}
+\begin{proof}
+	Beginning with the closed-form solution for $J_b(k)$,
+	which can be derived from \eqref{eq:cost-suboptimal},
+	we define
+	\begin{equation}
+	\label{eq:Jbk}
+		J_b(k) = \frac{1 + k^2}{-2(a + bk)}
+		\geq \frac{k^2}{-2(a + bk)}
+		\defeq \underline{J_b}(k)
+		.
+	\end{equation}
+	By \lemmaref{lem:scalar-cost-ub}, we have
+	\(
+		J^\star_b < \nofrac{3a}{b^2} \defeq \overline{J^\star_b}
+	\),
+	so $\ratiolb = \nofrac{\underline{J_b}(k)}{\,\overline{J^\star_b}}$
+	is a lower bound on the suboptimality of $k$.
+	Computing $\partial^2 \ratiolb / \partial b^2$
+	shows that $\ratiolb$ is strictly convex in $b$ on the domain $a + bk < 0$,
+	so the $\alpha$-sublevel set of $\ratiolb$ is the closed interval
+	with boundaries where $\ratiolb = \alpha$.
+	This equation is quadratic in $b$ with the solutions
+	\(
+		b = -a(3 \alpha \pm \sqrt{9 \alpha^2 - 6 \alpha})/k
+	\).
+	The resulting interval contains $\suboptneighb{\alpha}{k}$.
+\end{proof}
+
+
+\begin{restatable}{lemma2}{quasi}
+\label{lem:subopt-convex}
+	For a scalar \DDFproblem, if $\alpha > 1$
+	and $k < -1$,
+	then $\suboptneighb{\alpha}{k}$ is either empty or a closed interval
+	$[b_1, b_2]$,
+	with $b_1$ and $b_2$ positive and nondecreasing in $k$.
+\end{restatable}
+\begin{proof}
+The result follows from the quasiconvexity of
+both the suboptimality ratio $J_b(k) / J^\star_b$
+and the cost $J_b(k)$.
+Showing these requires some tedious calculations.
+\ifextended{
+	For details, see \Cref{sec:appendix-theory}.
+}{
+	For details, see the extended version of this paper.
+}
+\end{proof}
+
+\begin{theorem}
+\label{thm:scalar-lb}
+	For a scalar \DDFproblem\ defined by
+	$a = 1$ and $\Bset = [\recip \breadth, 1]$,
+	if $\alpha \geq 3 / 2$, %
+	then
+	$\coveringnum{\alpha}{\Bset} = \Omega(\log \breadth)$.
+\end{theorem}
+\begin{proof}
+	From the closed-form solution
+	\(
+		k^\star_{a,b} = -(a + \sqrt{a^2 + b^2})/b
+	\),
+	we observe that $k^\star_b < -1$ for all $b \in \Bset$.
+	This, along with the quasiconvexity of $J_b(k)$ in $k$,
+	implies that there exists a minimal $\alpha$-suboptimal cover $\coveringset$ for which all $k_i < -1$.
+	Suppose $\coveringset = k_1, \dots, k_N$ is such a cover, ordered such that $k_i < k_{i+1}$.
+	Then
+	by \lemmaref{lem:subopt-convex},
+	$\suboptneighb{\alpha}{k_i}$
+	and
+	$\suboptneighb{\alpha}{k_{i+1}}$
+	must intersect,
+	so their overestimates according to
+	\lemmaref{lem:scalar-neighborhood-optimistic}
+	certainly intersect,
+	therefore satisfying
+	\[
+		\frac{c_1 + c_2}{-k_{i+1}}
+		\geq
+		\frac{c_1 - c_2}{-k_i}
+		\implies
+		\frac{k_{i+1}}{k_i} \leq \frac{c_1 + c_2}{c_1 - c_2}
+		\implies
+		\frac{k_N}{k_1} \leq \left(\frac{c_1 + c_2}{c_1 - c_2}\right)^{N-1}.
+	\]
+	By \lemmaref{lem:scalar-neighborhood-optimistic},
+	to cover $b = 1$
+	controller $k_1$ must satisfy
+	$k_1 \geq -(c_1 + c_2)$,
+	and to cover $b = \recip \breadth$,
+	controller $k_N$ must satisfy
+	$k_N \leq -\breadth(c_1 - c_2)$.
+	Along with the previous result, this implies
+	\[
+		\left(\frac{c_1 + c_2}{c_1 - c_2}\right)^{N-1}
+		\geq
+		\breadth
+		\frac{c_1 - c_2}{c_1 + c_2}
+		\implies
+		N \geq \frac{\log \breadth}{\log \frac{c_1 + c_2}{c_1 - c_2}}.
+	\]
+	Recalling that $c_1$ and $c_2$ only depend on $a$ and $\alpha$,
+	the $\Omega(\log \breadth)$ dependence on $\breadth$ is established.
+\end{proof}
+
+\paragraph{Remarks}
+\begin{itemize}
+	\item For the upper bound, it may be possible to compute or bound $\beta$ in the scalar case
+		as a function of $a$ and $\alpha$,
+		but the analogous result will likely be harder to obtain in the matrix case.
+	\item These results impose a lower bounds on $\alpha$ greater than $1$.
+		We believe this is a mild condition in control applications:
+		if the application demands a suboptimality ratio very close to 1,
+		then the size of the suboptimal cover is likely to become impractical for storage.
+		However, further theoretical results building upon suboptimal coverings may require eliminating the bound.
+\end{itemize}
+
+

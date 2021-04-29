@@ -1,0 +1,107 @@
+Overall
+one thanks
+one ack of limitations
+
+
+Motivation
+----------
+R1: I think their definition of a "task" is quite restrictive and not valid in practice. I imagine different tasks will be defined by more complex setups than the "varying B matrix" problem considered here. [...] Instead, I viewed these results as presenting a different viewpoint (focussed on covering numbers) in solving a robust/switched control systems [question/problem/? - J], with the connection to the multi-task problem being a somewhat loose justification for these theoretical results.
+R3: Although this type of analysis is interesting from a control perspective, it would be nice to also see how these covering numbers would practically impact (reinforcement) learning.
+
+J:
+Originally we had the motivation that stabilizing at an equilibrium is often a subtask of more complex realistic tasks. This must have been deleted for space; we could restore it.
+Varying the B matrix is not restrictive in the scalar setting because everything can be divided out. It is definitely restrictive in the matrix case though.
+Not sure how to respond to the practical impact on RL.
+
+G:
+Response to RL is part of initial ack
+
+
+
+Impact / Scope
+--------------
+R1: I think the paper's main flaw is its focus on scalar systems... Some results for higher order systems would have really stood out.
+R2: A lot of work is still required however to make these results applicable in more realistic settings since the theoretical guarantees are limited to the scalar setting. If this issue is resolved it could influence both adaptive control and robust control.
+R2: Unfortunately the scope of the most complete results remains limited to scalar linear systems, where only the input gain is allowed to vary.
+R3: Furthermore, the current results in the paper are not yet mature enough. Therefore I think they won't yet impact future research in applications on learning, dynamics and control. As a work in progress, it could lead to results of interest to the community.
+R3: The paper still reads as a work in progress. The results are also very much limited to specific scalar systems and are not very surprising.
+
+J: We anticipated this would be the main criticism, and it was.
+
+
+Structure
+---------
+R1: Having the related work section at the back of the paper was also a bit odd.
+R1: The location of the quadrotor example in the paper structure was a bit peculiar.
+R3: Still the results in the paper could be presented better. I find the mixture of matrix-based intermediate results with scalar results not very convincing. I think the results could be presented in a more compact manner if they were presented purely for the scalar case with references to the corresponding matrix-based tools.
+
+J:
+I guess we could rearrange sections to meet R1's requests, but I don't think I agree with them...
+I am not sure if "matrix-based intermediate results" means Lemmas 6-8 or the empirical results. Assuming it means the lemmas, they all have a reason to exist in matrix form for the empirical results:
+- L6: used to construct the geometric grid covering.
+- L7: justifies that a geometric grid covering always exists.
+- L8: used to evaluate "Efficiency of GCC synthesis" empirical result.
+I agree that using scalar-only versions in Section 3 would make that section a little cleaner on its own, but then we would need to restate matrix versions for the empirical part...
+
+G:
+Say we will rearrange if chair wants
+
+
+Related work
+------------
+R1: There are of course connections to other topics like switched systems and robust control that could have been alluded to more. There was no real comparison to existing approaches.
+
+J: I thought we had a decent amount of connections to robust control and switched systems in Section 5. Maybe R1 wrote their review in one pass and was expecting related work in the introduction?
+
+G: Maybe add note about apps to robust/switched as motivation, not just source of related results
+
+
+Notation
+--------
+R1: Some of the notation was rather similar to each other- especially with the use of caligraphic letters.
+
+J: Maybe we could use bold symbols instead of calligraphic for sets?
+
+
+Questions / Requests
+--------------------
+R2: The results are given for continuous time LQR. A comment on whether the techniques would generalize to discrete time would be helpful.
+R2: One remark is that Theorem 11 and Theorem 14 both impose a lower bound on $\alpha$. A comment on the consequences of this assumption would be helpful.
+R3: Please do not give a URL in the abstract.
+R3: Proof of Theorem 14: the statement "For such a cover N(k_i) and N(k_{I+1}) must intersect by lemma 13.." is not clear. It seems that you implicitly assume that k_i and k_{I+1} are ordered, that is, k_i>k_{I+1}.
+
+J:
+- Discrete time: may be feasible to get discrete equivalent of one scalar bound in the rebuttal period.
+- Consequence of alpha lower bound: Agree it should be discussed more.
+- Abstract URL: move to intro? or footnote?
+- T14 proof: We say "in decreasing order" in the first sentence of the proof.
+
+G:
+- Discrete: try to prove it
+- Alpha: actually explain in rebuttal
+- URL: "elsewhere", to conference style
+- Proof: remind, promise to clarify
+
+
+
+Going back to R1's full comment:
+
+Furthermore, I think their definition of a "task" is quite restrictive and not valid in practice. I imagine different tasks will be defined by more complex setups than the "varying B matrix" problem considered here. As the authors mention in the intro, they could involve "mapping an environment" or "delivering a package"- situations that wouldn't fit into this LQR-based framework.
+
+The task set {"mapping an environment", "delivering a package"} is an example of a discrete multi-task setting.
+In this paper, we are specifically considering continuous multi-task settings -- that example was supposed to be a contrast.
+I am struggling to imagine a continuous multi-task problem that is highly diverse in the same way as a discrete task set.
+Thinking of some other continuous multi-task problems, I came up with:
+0. delivering packages of different sizes/weights (our example in the paper)
+1. running at different speeds
+2. reaching for different targets in a robot workspace
+3. regulating a chemical reaction at different ambient temperatures
+4. hitting a tennis ball to different parts of the court
+5. navigating a team of robots through an environment with different safety radii
+6. aircraft autopilot at different density altitudes, different fuel weights
+It feels hard to come up with an example with the same level of task diversity as a discrete task set for a robot.
+Out of that list, {3, 6} could be posed as LQR and {0, 2, 5} arguably contain LQR-like equilibrium stabilization as a prominent subproblem.
+So, I don't necessarily agree that LQR is a restrictive setting.
+Many problems can't be modeled as LQR, but many other genuinely important problems can.
+
+

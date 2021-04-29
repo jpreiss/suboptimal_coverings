@@ -1,0 +1,133 @@
+\label{sec:grid}
+
+For matrix \DDFproblems,
+we present empirical results as a first step towards covering number bounds. %
+We begin by testing a cover construction. %
+If the construction fails to achieve a conjectured upper bound in a numerical experiment,
+then either the conjecture is false,
+or the construction is not efficient.
+A natural idea is to extend
+the geometrically spaced sequence of $b$ values from
+\lemmaref{lem:scalar-cost-ub}
+to multiple dimensions.
+We now make this notion, illustrated in \Cref{fig:geomgrid}, precise.
+
+\begin{definition}[Geometric grid partition]
+\label{def:geomgrid}
+	Given a \DDFproblem\ with $\bSigma = [\recip \breadth, 1]^d$,
+	and a grid pitch $k \in \N_+$,
+	select
+	$s_1, \dots, s_{k+1}$
+	such that
+	$s_1 = \recip \breadth$,
+	$s_{k + 1} = 1$,
+	and $\frac{s_{i+1}}{s_i} > 0$
+	is constant.
+	For each $j \in [k]^d$, define the grid cell
+	\(
+		\bSigma(j) = \textstyle \prod_{i=1}^d [s_{j(i)}, s_{j(i) + 1}],
+	\)
+	where $j(i)$ is the $i\th$ component of $j$.
+	The cells satisfy
+	\(
+		\bSigma = \textstyle \bigcup_{j \in [k]^d} \bSigma(j),
+	\)
+	thus forming an partition (up to boundaries) of $\bSigma$ into $k^d$ cells.
+\end{definition}
+
+\begin{figure}%
+	\subfigure{
+		\hspace{-5mm}
+		\raisebox{0mm}{
+			\inputpgf{figures}{geomgrid.pgf}
+		}
+		\label{fig:geomgrid}
+	}%
+	~\hfill
+	\subfigure{%
+		\raisebox{-2mm}{
+			\inputpgf{figures}{covering_quadrotor.pgf}
+		}
+		\label{fig:quadrotor_covering}
+	}%
+	~\hfill
+	\subfigure{%
+		\raisebox{-1mm}{
+			\inputpgf{figures}{covering_grid_ratios.pgf}
+		}
+		\label{fig:gridratios}
+	}
+	\caption{%
+		Application of geometric grid cover to linearized quadrotor.
+		(a) Illustration of geometric grid partition.
+		(b) Empirical upper bound on grid pitch $k$. %
+		(c) Suboptimality ratios for corner cells in empirical cover.
+		Discussion in \Cref{sec:grid}.
+	}
+\end{figure}
+
+\paragraph{Empirical upper bound on $\coveringnum{\alpha}{\Envs}$.}
+In this experiment, we construct $2$-suboptimal covers of
+the linearized quadrotor for varying $\breadth$
+using geometric grids.
+We begin with the guess $k = 1$.
+For each grid cell $\bSigma(j)$, we compute a controller $K(j)$ using GCC synthesis
+and check if $\bSigma(j) \subseteq \suboptneighb{2}{K(j)}$.
+(This requires evaluating only one Lyapunov equation due to \lemmaref{lem:lancaster-ARE-domination}.)
+If not, we increment $k$ and try again.
+Termination is guaranteed by continuity.
+Results for this experiment
+with $\breadth \in [1, 100]$
+are shown in
+\Cref{fig:quadrotor_covering}.
+The required grid pitch $k$ follows roughly logarithmic growth,
+as indicated by the linear least-squares best-fit curve in black.
+Small values of $\breadth$ are excluded from the fit (indicated by black markers),
+as we do not expect the asymptotic behavior to appear yet.
+
+These results do not rule out
+the $\log(\theta)^d$ growth suggested by
+the geometric grid construction.
+Testing larger values of $\breadth$
+is computationally difficult because the number of grid cells becomes huge
+and the GCC Riccati equation \eqref{eq:petersen-riccati}
+becomes numerically unstable for very small $\Sigma$.
+
+\paragraph{Efficiency of geometric grid partition.}
+\label{sec:are-geometric-efficient}
+
+Given an $\alpha$-suboptimal geometric grid cover,
+we examine a measurable quantity that may reflect the ``efficiency'' of the cover.
+Intuitively,
+in a good cover we expect 
+the worst-case suboptimality ratio of each controller $K(j)$ relative to its grid cell $\bSigma(j)$
+to be close to $\alpha$.
+If it close to $\alpha$ for some cells but significantly less than $\alpha$ for others,
+then the grid pitch around the latter cells is finer than necessary.
+We visualize results for this computation on the linearized quadrotor
+with $\theta = 10,\ k = 4$
+in \Cref{fig:gridratios}
+---
+only the corners of the $4 \times 4 \times 4 \times 4$ grid are shown.
+The suboptimality ratio is close to $\alpha = 2$
+for cells with low control authority (near $\Sigma = \recip \theta I$),
+but drops to around $1.4$
+for cells with high control authority (near $\Sigma = I$).
+The difference suggests that the geometric grid cover could be more efficient in the high-authority regime.
+
+\paragraph{Efficiency of GCC synthesis.}
+One possible source of conservativeness is that
+\lemmaref{lem:petersen-gcc} applies to the affine image of
+a $m \times n$-dimensional matrix norm ball,
+but we only require guaranteed cost on
+a $d$-dimensional affine subspace of matrices.
+In other words, we ask GCC synthesis to ensure $\alpha$-suboptimality on systems that are not actually part of $\Envs$.
+If this is negatively affecting the result,
+then we should observe that the worst-case cost of $K(j)$ on $\bSigma(j)$
+is less than the trace of the solution $P$ for the GCC Riccati equation \eqref{eq:petersen-riccati}.
+The worst-case cost always occurs at the minimal $\Sigma \in \bSigma(j)$ by \lemmaref{lem:lancaster-ARE-domination};
+we evaluate it with \eqref{eq:cost-suboptimal}.
+For the quadrotor,
+a mismatch sometimes occurs for smaller values of $\theta$,
+but it does not occur for the large values of $\theta$.
+

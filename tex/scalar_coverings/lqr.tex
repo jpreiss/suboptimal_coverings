@@ -1,0 +1,114 @@
+A continuous-time, deterministic, infinite-horizon, time-invariant LQR problem with full-state feedback is defined by 
+state space $\cX = \R^n$,
+action space $\cU = \R^m$,
+linear dynamics
+\(
+	\dot x = Ax + Bu,
+\)
+where $A \in \R^{n \times n},\ B \in \R^{n \times m}$, and quadratic cost 
+\[
+	J(\pi) = \E_{x(0) \sim \Normal(\zero, I)}
+		\int_0^\infty \big(
+			x^\top Q x + u^\top R u
+		\big)\, \d t,
+\]
+where $Q \succeq \zero$ and $R \succ \zero$ are cost matrices of appropriate dimensions
+and $\Normal(\zero, I)$ is the unit Gaussian distribution.
+For the purposes of this paper, the pair $(A, B)$ is \emph{controllable}
+if $J(\pi) < \infty$ for some policy $\pi$.
+If $(A, B)$ is controllable,
+then the optimal policy %
+is the linear
+$u = \Kopt{} x$,
+where $\Kopt{} \in \R^{m \times n}$
+can be computed
+by finding the unique maximal positive semidefinite solution $P$
+of the algebraic Riccati equation
+\(
+	A^\top P + P A - P B R^{-1} B^\top P + Q = \zero
+\)
+(henceforth called the \emph{maximal solution})
+and letting $\Kopt{} = -R^{-1} B^\top P$
+\citep{kalman-contributions}.
+Additionally, $J(\Kopt{}) = \trace{P}$.
+An arbitrary controller $K \in \R^{m \times n}$ is \emph{stabilizing} if
+$J(K) < \infty$,
+in which case $J(K)$ satisfies
+\begin{equation}
+\label{eq:cost-suboptimal}
+	J(K) = \trace{(Q + K^\top R K) W}\!, \
+\text{where} \ \ 
+	W = \int_0^\infty {e^{t(A + BK)}}^\top {e^{t(A + BK)}} dt.
+\end{equation}
+$W$ can be computed by solving the Lyapunov equation
+\(
+	(A + BK)^\top W + W (A + BK)  + I = \zero.
+\)
+
+
+\paragraph{\Multidyn\ LQR}
+\label{sec:multilqr}
+A fully general formulation of \multienv\ LQR
+would allow variations in each of $(A, B, Q, R)$,
+but this creates redundancy.
+Any LQR problem
+where $Q \succ 0$
+is equivalent via change of coordinates
+to another LQR problem where $Q = I$ and $R = I$.
+To reduce redundancy,
+we consider only \emph{\multidyn} LQR problems where $Q = I_{n \times n}$ and $R = I_{m \times m}$
+in this work.
+The reference policy class is linear: $\Refpolicies = \R^{m \times n}$.
+
+A \multidyn\ LQR problem can be defined by
+$\Envs = \Aset \times \Bset$
+for some sets $\Aset \subseteq \R^{n \times n}$ and ${\Bset \subseteq \R^{n \times m}}$,
+but it is not obvious how to design $\Aset$ and $\Bset$.
+To support an asymptotic analysis of
+$\coveringnum{\subopt}{\Envs}$,
+the \envword\ space $\Envs$ should have a real-valued ``breadth'' parameter $\breadth$
+that sweeps from a single \envword\ to sets with arbitrarily large, but finite, covering numbers.
+Matrix norm balls are a popular representation of dynamics uncertainty in the robust control literature,
+but they can easily contain uncontrollable pairs,
+and removing the uncontrollable pairs
+can lead to an infinite covering number.
+For example, in the scalar problem $\Aset = \{a\},\ \Bset = [-\breadth, 0) \cup (0, \breadth]$, where $a \neq 0$,
+it can be shown that
+no $\alpha$-suboptimal cover is finite.
+
+These properties are worrying, but the example $\Bset$ is pathological.
+The zero crossing is analogous to reversing the direction of force applied by an actuator in a physical system.
+A more relevant multi-dynamics problem is variations
+in mass or actuator strength,
+whose signs are fixed.
+We formalize this idea with the following definition.
+\begin{definition}
+\label{def:B-SVD}
+	Fix $A \in \R^{n \times n}$
+	and a \emph{breadth} parameter $\breadth \geq 1$.
+	Let $\Aset = \{ A \}$ and
+		$\Bset = \{ U \Sigma V^\top : \Sigma \in \bSigma \}$,
+		where
+		$\bSigma = \{ \diag(\sigma) : \sigma \in [\recip \breadth, 1]^d \}$.
+	The matrices $U \in \R^{n \times d}$
+	and
+	$V \in \R^{m \times d}$ each have rank $d$, where
+	$0 < d \leq \min \{n, m\}$.
+	The tuple $(A, U, V, \breadth)$
+	fully defines a \emph{\multienv\ LQR problem in decomposed dynamics form},
+	or \emph{\DDFproblem} for brevity.
+\end{definition}
+
+We will abuse notation and associate $\Envs$ with both $\Aset \times \Bset$ and $\bSigma$
+when the meaning is clear from context.
+The continuity of the LQR cost \eqref{eq:cost-suboptimal} with respect to $B$
+and the compactness of $\Envs$ for any $\breadth$ imply that
+$\coveringnum{\alpha}{\Envs_\breadth}$ is always finite.
+Variations in $A$ are redundant in the scalar case where we focus our theoretical work in this paper.
+The definition can be extended to include them in future work.
+
+
+
+
+\paragraph{Linearized quadrotor example}
+\input{decomposed_dynamics_examples.tex}

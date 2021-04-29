@@ -1,0 +1,108 @@
+Overall
+one thanks
+one ack of limitations
+
+We thank the reviewers for their thoughtful comments.
+
+We agree that the focus on the scalar case and the B matrix are significant restrictions compared to the general LQR problem.
+Removing them is our primary focus for future work.
+TODO: RL
+
+Regarding Reviewer 1's statement:
+
+> I think their definition of a "task" is quite restrictive and not valid in practice. I imagine different tasks will be defined by more complex setups than the "varying B matrix" problem considered here. As the authors mention in the intro, they could involve "mapping an environment" or "delivering a package"- situations that wouldn't fit into this LQR-based framework.
+
+We believe that this gap in expressiveness is mostly between discrete and continuous task spaces.
+Continuous task spaces will often arise from variations in physical parameters, so all the tasks will seem closely related compared to a discrete space.
+
+Many more complex continuous control tasks include stabilizing the system at an equilibrium as a subtask.
+Since LQR models this subtask accurately with a neighborhood of the equilibrium point, LQR-based analysis of this subtask can provide a lower
+analysis of LQR suboptimal coverings may provide a useful lower bound on the LQR suboptimal 
+
+Regarding R1's comment about the location of the related work section and the quadrotor example:
+We are happy to restructure the paper as neeeded to suit the style preferences of this conference.
+
+R1:
+> some of the notation was rather similar to each other - especially with the use of caligraphic letters.
+We will change the notation to make sets and matrices look less similar.
+
+
+
+
+
+Structure
+---------
+R1: Having the related work section at the back of the paper was also a bit odd.
+R1: The location of the quadrotor example in the paper structure was a bit peculiar.
+R3: Still the results in the paper could be presented better. I find the mixture of matrix-based intermediate results with scalar results not very convincing. I think the results could be presented in a more compact manner if they were presented purely for the scalar case with references to the corresponding matrix-based tools.
+
+J:
+I guess we could rearrange sections to meet R1's requests, but I don't think I agree with them...
+I am not sure if "matrix-based intermediate results" means Lemmas 6-8 or the empirical results. Assuming it means the lemmas, they all have a reason to exist in matrix form for the empirical results:
+- L6: used to construct the geometric grid covering.
+- L7: justifies that a geometric grid covering always exists.
+- L8: used to evaluate "Efficiency of GCC synthesis" empirical result.
+I agree that using scalar-only versions in Section 3 would make that section a little cleaner on its own, but then we would need to restate matrix versions for the empirical part...
+
+G:
+Say we will rearrange if chair wants
+
+
+Related work
+------------
+R1: There are of course connections to other topics like switched systems and robust control that could have been alluded to more. There was no real comparison to existing approaches.
+
+J: I thought we had a decent amount of connections to robust control and switched systems in Section 5. Maybe R1 wrote their review in one pass and was expecting related work in the introduction?
+
+G: Maybe add note about apps to robust/switched as motivation, not just source of related results
+
+
+Notation
+--------
+R1: Some of the notation was rather similar to each other- especially with the use of caligraphic letters.
+
+J: Maybe we could use bold symbols instead of calligraphic for sets?
+
+
+Questions / Requests
+--------------------
+R2: The results are given for continuous time LQR. A comment on whether the techniques would generalize to discrete time would be helpful.
+R2: One remark is that Theorem 11 and Theorem 14 both impose a lower bound on $\alpha$. A comment on the consequences of this assumption would be helpful.
+R3: Please do not give a URL in the abstract.
+R3: Proof of Theorem 14: the statement "For such a cover N(k_i) and N(k_{I+1}) must intersect by lemma 13.." is not clear. It seems that you implicitly assume that k_i and k_{I+1} are ordered, that is, k_i>k_{I+1}.
+
+J:
+- Discrete time: may be feasible to get discrete equivalent of one scalar bound in the rebuttal period.
+- Consequence of alpha lower bound: Agree it should be discussed more.
+- Abstract URL: move to intro? or footnote?
+- T14 proof: We say "in decreasing order" in the first sentence of the proof.
+
+G:
+- Discrete: try to prove it
+- Alpha: actually explain in rebuttal
+- URL: "elsewhere", to conference style
+- Proof: remind, promise to clarify
+
+
+
+Going back to R1's full comment:
+
+Furthermore, I think their definition of a "task" is quite restrictive and not valid in practice. I imagine different tasks will be defined by more complex setups than the "varying B matrix" problem considered here. As the authors mention in the intro, they could involve "mapping an environment" or "delivering a package"- situations that wouldn't fit into this LQR-based framework.
+
+The task set {"mapping an environment", "delivering a package"} is an example of a discrete multi-task setting.
+In this paper, we are specifically considering continuous multi-task settings -- that example was supposed to be a contrast.
+I am struggling to imagine a continuous multi-task problem that is highly diverse in the same way as a discrete task set.
+Thinking of some other continuous multi-task problems, I came up with:
+0. delivering packages of different sizes/weights (our example in the paper)
+1. running at different speeds
+2. reaching for different targets in a robot workspace
+3. regulating a chemical reaction at different ambient temperatures
+4. hitting a tennis ball to different parts of the court
+5. navigating a team of robots through an environment with different safety radii
+6. aircraft autopilot at different density altitudes, different fuel weights
+It feels hard to come up with an example with the same level of task diversity as a discrete task set for a robot.
+Out of that list, {3, 6} could be posed as LQR and {0, 2, 5} arguably contain LQR-like equilibrium stabilization as a prominent subproblem.
+So, I don't necessarily agree that LQR is a restrictive setting.
+Many problems can't be modeled as LQR, but many other genuinely important problems can.
+
+
